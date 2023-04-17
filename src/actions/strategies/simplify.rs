@@ -1,9 +1,4 @@
-use tracing::debug;
-
-use crate::{
-    ast::{product::Product, Element, Equation, Expression, Node, NodeOrExpression},
-    output::equation_to_rpn::ReversePolishNotation,
-};
+use crate::ast::{product::Product, Element, Equation, Expression, Node, NodeOrExpression};
 
 use super::strategy::Strategy;
 
