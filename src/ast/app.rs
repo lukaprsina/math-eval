@@ -1,6 +1,7 @@
 use std::{cell::RefCell, collections::HashMap, fmt::Debug, rc::Rc};
 
 use petgraph::stable_graph::NodeIndex;
+use tracing::debug;
 use uuid::Uuid;
 
 use crate::{
@@ -9,6 +10,7 @@ use crate::{
         strategies::strategy::Strategy,
     },
     graph::graph::EquationGraph,
+    output::equation_to_rpn::ReversePolishNotation,
 };
 
 use super::{
@@ -17,7 +19,7 @@ use super::{
     Element, Equation,
 };
 
-const STRATEGIES: [&'static str; 1] = ["solve_one_variable"];
+const STRATEGIES: [&'static str; 1] = ["apply_inverse"];
 
 #[derive(Debug)]
 pub struct App {
@@ -95,20 +97,22 @@ impl App {
 
         for strategy in ["flatten", "simplify"] {
             original_eq.apply_strategy(self, strategy);
+            debug!("{}", original_eq.rpn());
         }
 
         for strategy in STRATEGIES {
+            for side in &mut original_eq.equation_sides {
+                side.analyze(None);
+            }
+
             let mut cloned_eq = original_eq.clone();
             let constraints = cloned_eq.apply_strategy(self, strategy);
-            // debug!("{:#?}", cloned_eq);
             let (node_index, _) = graph.add_path(cloned_eq.clone(), constraints, node_index);
 
             let leaf_eq = &graph.graph[node_index];
             let mut names = IsSameNames::new();
             let is_same = IsSame::is_same(leaf_eq, &original_eq, &mut names);
             if !is_same {
-                // debug!("{:#?}", cloned_eq);
-                // debug!("{:#?}", leaf_eq);
                 indices.push(node_index);
             }
         }

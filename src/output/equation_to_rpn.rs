@@ -52,9 +52,17 @@ impl ReversePolishNotation for Element {
 
 impl ReversePolishNotation for Expression {
     fn rpn(&self) -> String {
+        if self.products.len() == 0 {
+            return String::new();
+        }
+
         let mut result = String::new();
 
         for (pos, product) in self.products.iter().enumerate() {
+            if product.numerator.len() == 0 && product.denominator.len() == 0 {
+                break;
+            }
+
             let product_rpn = product.rpn();
             result.push_str(&format!("{product_rpn} "));
 
@@ -74,7 +82,7 @@ impl ReversePolishNotation for Product {
 
         for (side_pos, side) in [&self.numerator, &self.denominator].into_iter().enumerate() {
             if side_pos == 0 && self.numerator.is_empty() {
-                result += "1 ";
+                result += "1l ";
             }
 
             for (elem_pos, element) in side.into_iter().enumerate() {

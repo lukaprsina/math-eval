@@ -7,7 +7,7 @@ use crate::ast::Equation;
 
 #[derive(Debug, Clone)]
 pub struct EquationGraph {
-    pub graph: UnGraph<Equation, Vec<Equation>>,
+    pub graph: UnGraph<Equation, Vec<String>>,
 }
 
 impl EquationGraph {
@@ -24,7 +24,7 @@ impl EquationGraph {
     pub fn add_path(
         &mut self,
         equation: Equation,
-        constraints: Vec<Equation>,
+        constraints: Vec<String>,
         index: NodeIndex,
     ) -> (NodeIndex, EdgeIndex) {
         let node_index = self.graph.add_node(equation);

@@ -6,7 +6,8 @@ use crate::{
 };
 
 pub struct Strategy {
-    pub equation: Option<Box<dyn FnMut(&mut Equation) -> Vec<Equation>>>,
+    pub check: Option<Box<dyn FnMut(&mut Equation) -> bool>>,
+    pub apply: Option<Box<dyn FnMut(&mut Equation) -> Vec<String>>>,
 }
 
 impl Debug for Strategy {
@@ -20,8 +21,8 @@ impl App {
         let tuples = [
             ("simplify", strategies::simplify::get_simplify()),
             (
-                "solve_one_variable",
-                strategies::solve_one_variable::get_solve_one_variable(),
+                "apply_inverse",
+                strategies::apply_inverse::get_apply_inverse(),
             ),
             ("flatten", strategies::flatten::get_flatten()),
         ];

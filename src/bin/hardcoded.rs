@@ -28,9 +28,9 @@ fn main() -> Result<()> {
         let mut borrowed_app = app.borrow_mut();
         let context = borrowed_app.get_context_mut(uuid).unwrap();
 
-        /* for (_, equation) in &context.equations {
+        for (_, equation) in &context.equations {
             debug!("{}", equation.rpn());
-        } */
+        }
 
         App::solve(&mut borrowed_app, uuid);
 
@@ -43,6 +43,9 @@ fn main() -> Result<()> {
 
 static EQUATIONS: Lazy<Vec<String>> = Lazy::new(|| {
     let strings = vec![
+        "x+1 = 0",
+        "(1+0)/(3+1) = 0",
+        "x*2/(3+1) = 0",
         "sin(x^3+1)=0",
         "(-1-2)*3",
         "1/(2+x)",

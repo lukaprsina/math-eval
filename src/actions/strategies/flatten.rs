@@ -6,14 +6,16 @@ use super::strategy::Strategy;
 
 pub fn get_flatten() -> Strategy {
     Strategy {
-        equation: Some(Box::new(flatten_equation)),
+        apply: Some(Box::new(flatten_equation)),
+        check: None,
     }
 }
 
-fn flatten_equation(equation: &mut Equation) -> Vec<Equation> {
+fn flatten_equation(equation: &mut Equation) -> Vec<String> {
     for side_element in &mut equation.equation_sides {
         side_element.apply_to_every_element_mut(&mut flatten_element, false, None);
     }
+
     vec![]
 }
 
