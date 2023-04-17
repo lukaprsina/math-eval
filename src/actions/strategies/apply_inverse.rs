@@ -20,7 +20,10 @@ pub enum EquationTransformation {
         multiply: Product,
         side_with_variable: Product,
     },
-    Add(Expression),
+    Add {
+        add: Expression,
+        side_with_variable: Expression,
+    },
 }
 
 #[derive(Debug, Clone)]
@@ -132,7 +135,10 @@ fn get_element_inverse(element: &Element) -> Option<TransformResult> {
                 None => None,
             },
             _ => match multiple_products(expression) {
-                Some(add) => Some(EquationTransformation::Add(add)),
+                Some((add, side_with_variable)) => Some(EquationTransformation::Add {
+                    add,
+                    side_with_variable,
+                }),
                 None => None,
             },
         },
@@ -207,8 +213,9 @@ fn one_product(product: &Product, constraints: &mut Vec<String>) -> Option<(Prod
     }
 }
 
-fn multiple_products(expression: &Expression) -> Option<Expression> {
+fn multiple_products(expression: &Expression) -> Option<(Expression, Expression)> {
     let mut new_expression = Expression::new(vec![]);
+    let mut expr_with_variable = Expression::new(vec![]);
 
     debug!("{expression:#?}");
     debug!("{}", expression.rpn());
@@ -223,18 +230,21 @@ fn multiple_products(expression: &Expression) -> Option<Expression> {
 
         for side in [&product.numerator, &product.denominator] {
             for pr_elem in side {
-                skip_product = match &pr_elem.cache {
-                    Some(cache) => cache.variables.len() == 1,
+                match &pr_elem.cache {
+                    Some(cache) => {
+                        if cache.variables.len() == 1 {
+                            skip_product = true;
+                            break;
+                        }
+                    }
                     None => panic!("Element should be analyzed when applying inverse"),
-                };
-
-                if skip_product {
-                    break;
                 }
             }
         }
 
-        if !skip_product {
+        if skip_product {
+            expr_with_variable.products.push(product.clone());
+        } else {
             let mut new_product = product.clone();
             let pr_elem = if new_product.numerator.len() > 0 {
                 new_product.numerator.first_mut().unwrap()
@@ -253,7 +263,7 @@ fn multiple_products(expression: &Expression) -> Option<Expression> {
 
     match new_expression.products.len() {
         0 => None,
-        _ => Some(new_expression),
+        _ => Some((new_expression, expr_with_variable)),
     }
 }
 
@@ -341,10 +351,21 @@ fn transform_equation(equation: &mut Equation, inverse: EquationTransformation) 
                     NodeOrExpression::Expression(Expression::new(vec![product])),
                 );
             }
-            EquationTransformation::Add(expression) => {
-                if is_side_with_variable {
+            EquationTransformation::Add {
+                add,
+                side_with_variable,
+            } => {
+                let expression = if is_side_with_variable {
+                    side_with_variable.clone()
                 } else {
-                }
+                    let mut new_expr = add.clone();
+                    new_expr
+                        .products
+                        .push(Product::new(vec![side.clone()], vec![]));
+                    new_expr
+                };
+
+                *side = Element::new(Sign::Positive, NodeOrExpression::Expression(expression));
             }
         }
     }

@@ -43,7 +43,7 @@ fn main() -> Result<()> {
 
 static EQUATIONS: Lazy<Vec<String>> = Lazy::new(|| {
     let strings = vec![
-        "sin(x*2)=0",
+        "x*2=0",
         "x+1 = 0",
         "(1+0)/(3+1) = 0",
         "x*2/(3+1) = 0",
