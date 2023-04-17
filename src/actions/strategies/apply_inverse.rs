@@ -12,6 +12,23 @@ use crate::{
 
 use super::strategy::Strategy;
 
+#[derive(Debug, Clone)]
+pub enum EquationTransformation {
+    Function(String),
+    InverseFunction(String),
+    Multiply {
+        multiply: Product,
+        side_with_variable: Product,
+    },
+    Add(Expression),
+}
+
+#[derive(Debug, Clone)]
+struct TransformResult {
+    pub transformation: EquationTransformation,
+    pub constraints: Vec<String>,
+}
+
 // imply that it has been analysed
 fn apply_inverse(equation: &mut Equation) -> Vec<String> {
     if equation.equation_sides.len() != 2 {
@@ -27,6 +44,7 @@ fn apply_inverse(equation: &mut Equation) -> Vec<String> {
             Some(cache) => {
                 if cache.variables.len() >= 1 {
                     inverse = get_element_inverse(side_element);
+                    debug!("{:#?}", inverse);
                     break;
                 }
             }
@@ -76,19 +94,6 @@ static INVERSE_FUNCTIONS: Lazy<HashMap<String, (String, Vec<String>)>> = Lazy::n
     new_map
 });
 
-#[derive(Debug, Clone)]
-pub enum EquationTransformation {
-    Function(String),
-    InverseFunction(String),
-    Multiply(Product),
-    Add(Expression),
-}
-
-struct TransformResult {
-    pub transformation: EquationTransformation,
-    pub constraints: Vec<String>,
-}
-
 fn get_element_inverse(element: &Element) -> Option<TransformResult> {
     let mut constraints: Vec<String> = vec![];
 
@@ -120,7 +125,10 @@ fn get_element_inverse(element: &Element) -> Option<TransformResult> {
         NodeOrExpression::Expression(expression) => match expression.products.len() {
             0 => None,
             1 => match one_product(expression.products.first().unwrap(), &mut constraints) {
-                Some(multiply) => Some(EquationTransformation::Multiply(multiply)),
+                Some((multiply, side_with_variable)) => Some(EquationTransformation::Multiply {
+                    multiply,
+                    side_with_variable,
+                }),
                 None => None,
             },
             _ => match multiple_products(expression) {
@@ -139,7 +147,7 @@ fn get_element_inverse(element: &Element) -> Option<TransformResult> {
     }
 }
 
-fn one_product(product: &Product, constraints: &mut Vec<String>) -> Option<Product> {
+fn one_product(product: &Product, constraints: &mut Vec<String>) -> Option<(Product, Product)> {
     let mut new_product = Product::new(vec![], vec![]);
     let mut pr_with_variable = Product::new(vec![], vec![]);
 
@@ -195,7 +203,7 @@ fn one_product(product: &Product, constraints: &mut Vec<String>) -> Option<Produ
             };
         }
 
-        Some(new_product)
+        Some((new_product, pr_with_variable))
     }
 }
 
@@ -233,7 +241,7 @@ fn multiple_products(expression: &Expression) -> Option<Expression> {
             } else if new_product.numerator.len() > 0 {
                 new_product.denominator.first_mut().unwrap()
             } else {
-                panic!("Product should'nt be empty");
+                panic!("Product shouldn't be empty");
             };
 
             pr_elem.sign = pr_elem.sign * Sign::Negative;
@@ -250,19 +258,10 @@ fn multiple_products(expression: &Expression) -> Option<Expression> {
 }
 
 fn transform_equation(equation: &mut Equation, inverse: EquationTransformation) {
-    /*for side in &mut equation.equation_sides {
-        if let Some(cache) = &side.cache {
-            match cache.variables.len() {
-                0 => transform_other_side(side, transform_result.transformation.clone()),
-                1 => *side = transform_result.side_with_variable.clone(),
-                _ => panic!("Too many variables"),
-            }
-        }
-    } */
     debug!("{inverse:#?}");
 
     for side in &mut equation.equation_sides {
-        let side_with_variable = if let Some(cache) = &side.cache {
+        let is_side_with_variable = if let Some(cache) = &side.cache {
             match cache.variables.len() {
                 0 => false,
                 1 => true,
@@ -274,7 +273,14 @@ fn transform_equation(equation: &mut Equation, inverse: EquationTransformation) 
 
         match &inverse {
             EquationTransformation::Function(name) => {
-                if side_with_variable {
+                if is_side_with_variable {
+                    if let NodeOrExpression::Node(Node::Function { name: _, arguments }) =
+                        &side.node_or_expression
+                    {
+                        *side = arguments.get(0).expect("Function with more than one argument can't be solved at the moment").clone();
+                    } else {
+                        panic!("Wrong transformation")
+                    }
                 } else {
                     let func = Node::Function {
                         name: name.clone(),
@@ -285,7 +291,14 @@ fn transform_equation(equation: &mut Equation, inverse: EquationTransformation) 
                 }
             }
             EquationTransformation::InverseFunction(name) => {
-                if side_with_variable {
+                if is_side_with_variable {
+                    if let NodeOrExpression::Node(Node::Function { name: _, arguments }) =
+                        &side.node_or_expression
+                    {
+                        *side = arguments.get(0).expect("Function with more than one argument can't be solved at the moment").clone();
+                    } else {
+                        panic!("Wrong transformation")
+                    }
                 } else {
                     let negative_one = Element::new(
                         Sign::Positive,
@@ -310,8 +323,32 @@ fn transform_equation(equation: &mut Equation, inverse: EquationTransformation) 
                     *side = Element::new(Sign::Positive, NodeOrExpression::Node(inverse_func));
                 }
             }
-            EquationTransformation::Multiply(product) => todo!(),
-            EquationTransformation::Add(expression) => todo!(),
+            EquationTransformation::Multiply {
+                multiply,
+                side_with_variable,
+            } => {
+                let product = if is_side_with_variable {
+                    side_with_variable.clone()
+                } else {
+                    let mut new_product = multiply.clone();
+                    new_product.numerator.push(side.clone());
+                    new_product
+                };
+
+                *side = Element::new(
+                    // TODO: sign
+                    Sign::Positive,
+                    NodeOrExpression::Expression(Expression::new(vec![product])),
+                );
+            }
+            EquationTransformation::Add(expression) => {
+                if is_side_with_variable {
+                } else {
+                }
+            }
         }
     }
+
+    debug!("{equation:#?}");
+    debug!("{}", equation.rpn());
 }
