@@ -3,12 +3,8 @@ use std::collections::HashMap;
 
 use itertools::Itertools;
 use once_cell::sync::Lazy;
-use tracing::debug;
 
-use crate::{
-    ast::{product::Product, Element, Equation, Expression, Node, NodeOrExpression, Sign},
-    output::equation_to_rpn::ReversePolishNotation,
-};
+use crate::ast::{product::Product, Element, Equation, Expression, Node, NodeOrExpression, Sign};
 
 use super::strategy::Strategy;
 
@@ -47,7 +43,7 @@ fn apply_inverse(equation: &mut Equation) -> Vec<String> {
             Some(cache) => {
                 if cache.variables.len() >= 1 {
                     inverse = get_element_inverse(side_element);
-                    debug!("{:#?}", inverse);
+                    // debug!("{:#?}", inverse);
                     break;
                 }
             }
@@ -217,12 +213,12 @@ fn multiple_products(expression: &Expression) -> Option<(Expression, Expression)
     let mut new_expression = Expression::new(vec![]);
     let mut expr_with_variable = Expression::new(vec![]);
 
-    debug!("{expression:#?}");
-    debug!("{}", expression.rpn());
+    // debug!("{expression:#?}");
+    // debug!("{}", expression.rpn());
 
     for product in &expression.products {
         let mut skip_product = false;
-        debug!("{}", product.rpn());
+        // debug!("{}", product.rpn());
 
         if product.numerator.len() == 0 && product.denominator.len() == 0 {
             break;
@@ -268,7 +264,7 @@ fn multiple_products(expression: &Expression) -> Option<(Expression, Expression)
 }
 
 fn transform_equation(equation: &mut Equation, inverse: EquationTransformation) {
-    debug!("{inverse:#?}");
+    // debug!("{inverse:#?}");
 
     for side in &mut equation.equation_sides {
         let is_side_with_variable = if let Some(cache) = &side.cache {
@@ -370,6 +366,6 @@ fn transform_equation(equation: &mut Equation, inverse: EquationTransformation) 
         }
     }
 
-    debug!("{equation:#?}");
-    debug!("{}", equation.rpn());
+    // debug!("{equation:#?}");
+    // debug!("{}", equation.rpn());
 }

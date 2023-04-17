@@ -5,7 +5,6 @@ use itertools::Itertools;
 use math_eval::{
     ast::{app::App, context::Context},
     initialize,
-    output::equation_to_rpn::ReversePolishNotation,
 };
 use once_cell::sync::Lazy;
 use tracing::debug;
@@ -20,17 +19,18 @@ fn main() -> Result<()> {
     for equation in EQUATIONS.iter() {
         let context = Context::new(Rc::clone(&app));
         let ctx_uuid = app.borrow_mut().add_context(context);
+        // debug!("{equation}");
         App::try_add_equation(Rc::clone(&app), ctx_uuid, equation.as_str())?;
         contexts.push(ctx_uuid);
     }
 
     for uuid in contexts {
         let mut borrowed_app = app.borrow_mut();
-        let context = borrowed_app.get_context_mut(uuid).unwrap();
+        let _context = borrowed_app.get_context_mut(uuid).unwrap();
 
-        for (_, equation) in &context.equations {
+        /* for (_, equation) in &_context.equations {
             debug!("{}", equation.rpn());
-        }
+        } */
 
         App::solve(&mut borrowed_app, uuid);
 
@@ -43,6 +43,11 @@ fn main() -> Result<()> {
 
 static EQUATIONS: Lazy<Vec<String>> = Lazy::new(|| {
     let strings = vec![
+        "x=(1/2)",
+        "sin(x)=2",
+        "sin(1/x)=2",
+        "sin(1/(x+f(3)))=2",
+        "sin(x/2*3)=f(4)",
         "x*2=0",
         "x+1 = 0",
         "(1+0)/(3+1) = 0",

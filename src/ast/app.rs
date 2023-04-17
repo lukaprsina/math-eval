@@ -87,33 +87,50 @@ impl App {
         graph: &mut EquationGraph,
     ) -> Vec<NodeIndex> {
         let mut original_eq = graph.graph[node_index].clone();
-        // debug!("{}", original_eq);
-
-        for element in &mut original_eq.equation_sides {
-            element.analyze(None);
-        }
+        // debug!("{}", original_eq.rpn());
 
         let mut indices = vec![];
-
-        for strategy in ["flatten", "simplify"] {
-            original_eq.apply_strategy(self, strategy);
-            debug!("{}", original_eq.rpn());
-        }
 
         for strategy in STRATEGIES {
             for side in &mut original_eq.equation_sides {
                 side.analyze(None);
             }
 
+            let mut previous_eq = original_eq.clone();
+            loop {
+                for strategy in ["flatten", "simplify"] {
+                    original_eq.apply_strategy(self, strategy);
+                    // debug!("{}", original_eq.rpn());
+                }
+
+                let mut names = IsSameNames::new();
+                let is_same = IsSame::is_same(&previous_eq, &original_eq, &mut names);
+                if is_same && names.check() {
+                    debug!("{}", original_eq.rpn());
+                    break;
+                }
+
+                previous_eq = original_eq.clone();
+            }
+
+            for side in &mut original_eq.equation_sides {
+                side.analyze(None);
+            }
+
             let mut cloned_eq = original_eq.clone();
+
             let constraints = cloned_eq.apply_strategy(self, strategy);
+            // debug!("{}", cloned_eq.rpn());
+
             let (node_index, _) = graph.add_path(cloned_eq.clone(), constraints, node_index);
 
             let leaf_eq = &graph.graph[node_index];
             let mut names = IsSameNames::new();
             let is_same = IsSame::is_same(leaf_eq, &original_eq, &mut names);
-            if !is_same {
+            if !is_same || !names.check() {
                 indices.push(node_index);
+            } else {
+                debug!("{}", original_eq.rpn());
             }
         }
 

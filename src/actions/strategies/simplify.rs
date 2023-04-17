@@ -1,4 +1,4 @@
-use crate::ast::{product::Product, Element, Equation, Expression, Node, NodeOrExpression};
+use crate::ast::{product::Product, Element, Equation, Expression, Node, NodeOrExpression, Sign};
 
 use super::strategy::Strategy;
 
@@ -159,6 +159,15 @@ fn simplify_equation(equation: &mut Equation) -> Vec<String> {
 
         // debug!("{}", side_element.rpn());
         // debug!("{side_element:#?}");
+
+        if let NodeOrExpression::Expression(expression) = &side_element.node_or_expression {
+            if expression.products.len() == 0 {
+                *side_element = Element::new(
+                    Sign::Positive,
+                    NodeOrExpression::Node(Node::Number(num::BigRational::from_integer(0.into()))),
+                )
+            }
+        }
     }
 
     vec![]
