@@ -1,17 +1,19 @@
 use std::{cell::RefCell, rc::Rc};
 
+use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 use crate::tokenizer::{parser::TokenizedString, token::Operation};
 
 use super::{app::App, context::CreateEquationError, Element};
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EquationCache {}
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct Equation {
     pub equation_sides: Vec<Element>,
+    #[serde(skip_serializing, skip_deserializing)]
     pub app: Rc<RefCell<App>>,
     pub context: Uuid,
     pub cache: Option<EquationCache>,

@@ -1,5 +1,6 @@
 use std::{cell::RefCell, collections::HashMap, fmt::Debug, rc::Rc};
 
+use serde::{Deserialize, Serialize};
 use thiserror::Error;
 use uuid::Uuid;
 
@@ -7,10 +8,10 @@ use crate::tokenizer::parser::ParseError;
 
 use super::{app::App, token_to_element::TokensToEquationError, Equation};
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum Domain {}
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum FunctionProperty {
     Idempotent,
     Involution,
@@ -18,7 +19,7 @@ pub enum FunctionProperty {
     Commutative,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum ElementDefinition {
     Variable {
         domain: Domain,
@@ -30,8 +31,9 @@ pub enum ElementDefinition {
     },
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Context {
+    #[serde(skip_serializing, skip_deserializing)]
     pub app: Rc<RefCell<App>>,
     pub equations: HashMap<Uuid, Equation>,
     pub definitions: HashMap<String, ElementDefinition>,

@@ -1,9 +1,11 @@
+use serde::{Deserialize, Serialize};
+
 use super::{
     element::{IsTimesVisible, ShouldBeParenthesized},
     Element, Node, NodeOrExpression, Sign,
 };
 
-#[derive(Debug, Clone, PartialEq, PartialOrd, Eq, Ord)]
+#[derive(Debug, Clone, PartialEq, PartialOrd, Eq, Ord, Serialize, Deserialize)]
 pub struct Product {
     pub numerator: Vec<Element>,
     pub denominator: Vec<Element>,

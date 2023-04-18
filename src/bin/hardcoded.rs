@@ -7,7 +7,6 @@ use math_eval::{
     initialize,
 };
 use once_cell::sync::Lazy;
-use tracing::debug;
 use uuid::Uuid;
 
 fn main() -> Result<()> {

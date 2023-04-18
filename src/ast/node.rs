@@ -1,9 +1,11 @@
+use serde::{Deserialize, Serialize};
+
 use super::{
     element::{IsTimesVisible, NodeOrExpression, ShouldBeParenthesized},
     Element,
 };
 
-#[derive(Debug, Clone, PartialEq, PartialOrd, Eq, Ord)]
+#[derive(Debug, Clone, PartialEq, PartialOrd, Eq, Ord, Serialize, Deserialize)]
 pub enum Node {
     Number(num::BigRational),
     Variable(String),

@@ -1,12 +1,17 @@
 use std::{collections::HashMap, fmt::Debug};
 
+use serde::{Deserialize, Serialize};
+
 use crate::{
     actions::strategies,
     ast::{app::App, Equation},
 };
 
+#[derive(Serialize, Deserialize)]
 pub struct Strategy {
+#[serde(skip_serializing, skip_deserializing)]
     pub check: Option<Box<dyn FnMut(&mut Equation) -> bool>>,
+    #[serde(skip_serializing, skip_deserializing)]
     pub apply: Option<Box<dyn FnMut(&mut Equation) -> Vec<String>>>,
 }
 

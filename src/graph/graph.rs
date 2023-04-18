@@ -2,10 +2,11 @@ use petgraph::{
     graph::UnGraph,
     stable_graph::{EdgeIndex, NodeIndex},
 };
+use serde::{Deserialize, Serialize};
 
 use crate::ast::Equation;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EquationGraph {
     pub graph: UnGraph<Equation, Vec<String>>,
 }

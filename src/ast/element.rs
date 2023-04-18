@@ -1,4 +1,5 @@
 use itertools::Itertools;
+use serde::{Deserialize, Serialize};
 
 use super::{product::Product, Expression, Node};
 use std::{cmp::Ordering, collections::HashSet, ops::Mul};
@@ -11,7 +12,7 @@ pub(crate) trait IsTimesVisible {
     fn is_times_visible(&self, last: &Element) -> bool;
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Default)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Default, Serialize, Deserialize)]
 pub enum Sign {
     #[default]
     Positive,
@@ -30,7 +31,7 @@ impl Mul for Sign {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, PartialOrd, Eq, Ord)]
+#[derive(Debug, Clone, PartialEq, PartialOrd, Eq, Ord, Serialize, Deserialize)]
 pub enum NodeOrExpression {
     Node(Node),
     Expression(Expression),
@@ -42,7 +43,7 @@ impl Default for NodeOrExpression {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct ElementCache {
     pub variables: HashSet<String>,
     pub functions: HashSet<String>,
@@ -71,7 +72,7 @@ impl Ord for ElementCache {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, PartialOrd, Eq, Ord, Default)]
+#[derive(Debug, Clone, PartialEq, PartialOrd, Eq, Ord, Default, Serialize, Deserialize)]
 pub struct Element {
     pub sign: Sign,
     pub node_or_expression: NodeOrExpression,
