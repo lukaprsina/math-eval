@@ -1,10 +1,12 @@
+use serde::{Deserialize, Serialize};
+
 use super::{
     element::{IsTimesVisible, ShouldBeParenthesized},
     product::Product,
     Element,
 };
 
-#[derive(Debug, Clone, PartialEq, PartialOrd, Eq, Ord)]
+#[derive(Debug, Clone, PartialEq, PartialOrd, Eq, Ord, Serialize, Deserialize)]
 pub struct Expression {
     pub products: Vec<Product>,
 }
