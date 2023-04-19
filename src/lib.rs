@@ -9,6 +9,7 @@ pub mod output;
 pub mod strategies;
 pub mod tokenizer;
 
+/// Initialize error reporter and logger.
 pub fn initialize() -> Result<()> {
     color_eyre::install()?;
     let subscriber = FmtSubscriber::builder()
