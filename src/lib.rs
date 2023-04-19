@@ -6,6 +6,7 @@ pub mod actions;
 pub mod ast;
 pub mod graph;
 pub mod output;
+pub mod strategies;
 pub mod tokenizer;
 
 pub fn initialize() -> Result<()> {
