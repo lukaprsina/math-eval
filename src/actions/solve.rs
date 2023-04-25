@@ -34,7 +34,7 @@ impl App {
         let (mut graph, center_index) = EquationGraph::new(equation.clone());
         self.process_graph_node(center_index, &mut graph);
 
-        let dot_format = Dot::with_config(&graph.graph, &[Config::EdgeNoLabel]);
+        /* let dot_format = Dot::with_config(&graph.graph, &[Config::EdgeNoLabel]);
         debug!("{dot_format:?}");
         debug!("{dot_format:#?}");
 
@@ -42,7 +42,7 @@ impl App {
         let graph_json = serde_json::to_string_pretty(&graph.graph).unwrap();
         debug!("{graph_json:?}");
         debug!("{graph_json:#?}");
-        debug!("{graph_json}");
+        debug!("{graph_json}"); */
     }
 
     pub fn process_graph_node(
