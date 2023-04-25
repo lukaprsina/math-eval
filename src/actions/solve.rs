@@ -35,14 +35,14 @@ impl App {
         self.process_graph_node(center_index, &mut graph);
 
         let dot_format = Dot::with_config(&graph.graph, &[Config::EdgeNoLabel]);
-        debug!("{dot_format:?}");
-        debug!("{dot_format:#?}");
+        // debug!("{dot_format:?}");
+        // debug!("{dot_format:#?}");
 
-        println!("\n");
+        // println!("\n");
         let graph_json = serde_json::to_string_pretty(&graph.graph).unwrap();
-        debug!("{graph_json:?}");
-        debug!("{graph_json:#?}");
-        debug!("{graph_json}");
+        // debug!("{graph_json:?}");
+        // debug!("{graph_json:#?}");
+        // debug!("{graph_json}");
     }
 
     pub fn process_graph_node(
@@ -87,7 +87,6 @@ impl App {
             // debug!("{}", cloned_eq.rpn());
 
             let (node_index, _) = graph.add_path(cloned_eq.clone(), constraints, node_index);
-
             let leaf_eq = &graph.graph[node_index];
             let mut names = IsSameNames::new();
             let is_same = IsSame::is_same(leaf_eq, &original_eq, &mut names);

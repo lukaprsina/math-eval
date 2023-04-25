@@ -1,0 +1,118 @@
+[34mDEBUG[0m [2mhardcoded[0m[2m:[0m Equation {
+    equation_sides: [
+        Element {
+            sign: Positive,
+            node_or_expression: Node(
+                Number(
+                    Ratio {
+                        numer: 1,
+                        denom: 1,
+                    },
+                ),
+            ),
+            cache: None,
+        },
+    ],
+    app: RefCell {
+        value: <borrowed>,
+    },
+    context: 6e3e055b50bc43deaf7465620aa80da3,
+    cache: Some(
+        EquationCache,
+    ),
+}
+[34mDEBUG[0m [2mmath_eval::actions::solve[0m[2m:[0m 1
+[34mDEBUG[0m [2mmath_eval::actions::solve[0m[2m:[0m 1
+[34mDEBUG[0m [2mmath_eval::actions::solve[0m[2m:[0m graph {
+    0 [ label = "Equation { equation_sides: [Element { sign: Positive, node_or_expression: Node(Number(Ratio { numer: 1, denom: 1 })), cache: Some(ElementCache { variables: {}, functions: {}, is_number: None }) }], app: RefCell { value: <borrowed> }, context: 6e3e055b-50bc-43de-af74-65620aa80da3, cache: Some(EquationCache) }" ]
+    1 [ label = "Equation { equation_sides: [Element { sign: Positive, node_or_expression: Node(Number(Ratio { numer: 1, denom: 1 })), cache: Some(ElementCache { variables: {}, functions: {}, is_number: None }) }], app: RefCell { value: <borrowed> }, context: 6e3e055b-50bc-43de-af74-65620aa80da3, cache: Some(EquationCache) }" ]
+    0 -- 1 [ ]
+}
+
+[34mDEBUG[0m [2mmath_eval::actions::solve[0m[2m:[0m graph {
+    0 [ label = "Equation {\l    equation_sides: [\l        Element {\l            sign: Positive,\l            node_or_expression: Node(\l                Number(\l                    Ratio {\l                        numer: 1,\l                        denom: 1,\l                    },\l                ),\l            ),\l            cache: Some(\l                ElementCache {\l                    variables: {},\l                    functions: {},\l                    is_number: None,\l                },\l            ),\l        },\l    ],\l    app: RefCell {\l        value: <borrowed>,\l    },\l    context: 6e3e055b50bc43deaf7465620aa80da3,\l    cache: Some(\l        EquationCache,\l    ),\l}\l" ]
+    1 [ label = "Equation {\l    equation_sides: [\l        Element {\l            sign: Positive,\l            node_or_expression: Node(\l                Number(\l                    Ratio {\l                        numer: 1,\l                        denom: 1,\l                    },\l                ),\l            ),\l            cache: Some(\l                ElementCache {\l                    variables: {},\l                    functions: {},\l                    is_number: None,\l                },\l            ),\l        },\l    ],\l    app: RefCell {\l        value: <borrowed>,\l    },\l    context: 6e3e055b50bc43deaf7465620aa80da3,\l    cache: Some(\l        EquationCache,\l    ),\l}\l" ]
+    0 -- 1 [ ]
+}
+
+
+
+[34mDEBUG[0m [2mmath_eval::actions::solve[0m[2m:[0m "{\n  \"nodes\": [\n    {\n      \"equation_sides\": [\n        {\n          \"sign\": \"Positive\",\n          \"node_or_expression\": {\n            \"Node\": {\n              \"Number\": [\n                [\n                  1,\n                  [\n                    1\n                  ]\n                ],\n                [\n                  1,\n                  [\n                    1\n                  ]\n                ]\n              ]\n            }\n          },\n          \"cache\": {\n            \"variables\": [],\n            \"functions\": [],\n            \"is_number\": null\n          }\n        }\n      ],\n      \"context\": \"6e3e055b-50bc-43de-af74-65620aa80da3\",\n      \"cache\": {}\n    },\n    {\n      \"equation_sides\": [\n        {\n          \"sign\": \"Positive\",\n          \"node_or_expression\": {\n            \"Node\": {\n              \"Number\": [\n                [\n                  1,\n                  [\n                    1\n                  ]\n                ],\n                [\n                  1,\n                  [\n                    1\n                  ]\n                ]\n              ]\n            }\n          },\n          \"cache\": {\n            \"variables\": [],\n            \"functions\": [],\n            \"is_number\": null\n          }\n        }\n      ],\n      \"context\": \"6e3e055b-50bc-43de-af74-65620aa80da3\",\n      \"cache\": {}\n    }\n  ],\n  \"node_holes\": [],\n  \"edge_property\": \"undirected\",\n  \"edges\": [\n    [\n      0,\n      1,\n      []\n    ]\n  ]\n}"
+[34mDEBUG[0m [2mmath_eval::actions::solve[0m[2m:[0m "{\n  \"nodes\": [\n    {\n      \"equation_sides\": [\n        {\n          \"sign\": \"Positive\",\n          \"node_or_expression\": {\n            \"Node\": {\n              \"Number\": [\n                [\n                  1,\n                  [\n                    1\n                  ]\n                ],\n                [\n                  1,\n                  [\n                    1\n                  ]\n                ]\n              ]\n            }\n          },\n          \"cache\": {\n            \"variables\": [],\n            \"functions\": [],\n            \"is_number\": null\n          }\n        }\n      ],\n      \"context\": \"6e3e055b-50bc-43de-af74-65620aa80da3\",\n      \"cache\": {}\n    },\n    {\n      \"equation_sides\": [\n        {\n          \"sign\": \"Positive\",\n          \"node_or_expression\": {\n            \"Node\": {\n              \"Number\": [\n                [\n                  1,\n                  [\n                    1\n                  ]\n                ],\n                [\n                  1,\n                  [\n                    1\n                  ]\n                ]\n              ]\n            }\n          },\n          \"cache\": {\n            \"variables\": [],\n            \"functions\": [],\n            \"is_number\": null\n          }\n        }\n      ],\n      \"context\": \"6e3e055b-50bc-43de-af74-65620aa80da3\",\n      \"cache\": {}\n    }\n  ],\n  \"node_holes\": [],\n  \"edge_property\": \"undirected\",\n  \"edges\": [\n    [\n      0,\n      1,\n      []\n    ]\n  ]\n}"
+[34mDEBUG[0m [2mmath_eval::actions::solve[0m[2m:[0m {
+  "nodes": [
+    {
+      "equation_sides": [
+        {
+          "sign": "Positive",
+          "node_or_expression": {
+            "Node": {
+              "Number": [
+                [
+                  1,
+                  [
+                    1
+                  ]
+                ],
+                [
+                  1,
+                  [
+                    1
+                  ]
+                ]
+              ]
+            }
+          },
+          "cache": {
+            "variables": [],
+            "functions": [],
+            "is_number": null
+          }
+        }
+      ],
+      "context": "6e3e055b-50bc-43de-af74-65620aa80da3",
+      "cache": {}
+    },
+    {
+      "equation_sides": [
+        {
+          "sign": "Positive",
+          "node_or_expression": {
+            "Node": {
+              "Number": [
+                [
+                  1,
+                  [
+                    1
+                  ]
+                ],
+                [
+                  1,
+                  [
+                    1
+                  ]
+                ]
+              ]
+            }
+          },
+          "cache": {
+            "variables": [],
+            "functions": [],
+            "is_number": null
+          }
+        }
+      ],
+      "context": "6e3e055b-50bc-43de-af74-65620aa80da3",
+      "cache": {}
+    }
+  ],
+  "node_holes": [],
+  "edge_property": "undirected",
+  "edges": [
+    [
+      0,
+      1,
+      []
+    ]
+  ]
+}

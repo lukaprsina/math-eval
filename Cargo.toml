@@ -1,13 +1,9 @@
 [package]
 name = "math_eval"
-version = "0.1.0"
+version = "1.0.0"
 edition = "2021"
 default-run = "hardcoded"
 authors = ["Luka Pršina"]
-
-#[lib]
-#name = "math_eval"
-#crate-type = ["rlib", "dylib"]
 
 [dependencies]
 color-eyre = { version = "0.6.2", default-features = false }
@@ -24,4 +20,9 @@ serde_with = "2.3.2"
 thiserror = "1.0.31"
 tracing = "0.1.35"
 tracing-subscriber = { version = "0.3.14", features = ["env-filter"] }
-uuid = { version = "1.1.2", features = ["v4", "fast-rng", "macro-diagnostics", "serde"] }
+uuid = { version = "1.1.2", features = [
+    "v4",
+    "fast-rng",
+    "macro-diagnostics",
+    "serde",
+] }

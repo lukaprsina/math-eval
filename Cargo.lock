@@ -465,7 +465,7 @@ dependencies = [
 
 [[package]]
 name = "math_eval"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
  "color-eyre",
  "getrandom",
