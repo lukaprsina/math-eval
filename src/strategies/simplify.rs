@@ -70,11 +70,12 @@ fn simplify_equation(equation: &mut Equation) -> Vec<String> {
 
         *side_element = cloned_elem.apply_to_every_element_into(
             &mut |element| {
-                // debug!("{}", element.rpn());
+                // debug!("sheise {}", element.rpn());
                 let node_or_expression = match element.node_or_expression {
                     NodeOrExpression::Node(node) => NodeOrExpression::Node(node),
                     NodeOrExpression::Expression(expression) => {
                         let mut new_expression = Expression::new(vec![]);
+                        // debug!("{expression:#?}");
 
                         for product in expression.products {
                             let mut pr_stage1 = Product::new(vec![], vec![]);
@@ -95,6 +96,8 @@ fn simplify_equation(equation: &mut Equation) -> Vec<String> {
                                 pr_stage1 = product.clone();
                             }
 
+                            // debug!("{pr_stage1:#?}");
+
                             let mut pr_stage2 = Product::new(vec![], vec![]);
 
                             for (side_pos, side) in [pr_stage1.numerator, pr_stage1.denominator]
@@ -111,7 +114,8 @@ fn simplify_equation(equation: &mut Equation) -> Vec<String> {
                                     } else {
                                         panic!("Too many sides");
                                     }
-                                    break;
+
+                                    continue;
                                 }
 
                                 for pr_elem in side {

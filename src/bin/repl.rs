@@ -11,17 +11,15 @@ fn main() -> Result<()> {
     initialize()?;
 
     let app = App::new()?;
-
-    let context = Context::new(Rc::clone(&app));
-
-    let ctx_uuid = app.borrow_mut().add_context(context);
-
     let mut rl = DefaultEditor::new()?;
 
     loop {
         let readline = rl.readline(">> ");
         match readline {
             Ok(line) => {
+                let context = Context::new(Rc::clone(&app));
+                let ctx_uuid = app.borrow_mut().add_context(context);
+
                 App::try_add_equation(Rc::clone(&app), ctx_uuid, line.as_str())?;
                 let mut borrowed_app = app.borrow_mut();
                 // let context = borrowed_app.get_context_mut(ctx_uuid).unwrap();

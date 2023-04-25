@@ -1,7 +1,4 @@
-use petgraph::{
-    dot::{Config, Dot},
-    stable_graph::NodeIndex,
-};
+use petgraph::stable_graph::NodeIndex;
 use tracing::debug;
 use uuid::Uuid;
 

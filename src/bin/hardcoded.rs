@@ -7,7 +7,6 @@ use math_eval::{
     initialize,
 };
 use once_cell::sync::Lazy;
-use tracing::debug;
 use uuid::Uuid;
 
 fn main() -> Result<()> {
@@ -28,9 +27,9 @@ fn main() -> Result<()> {
         let mut borrowed_app = app.borrow_mut();
         let _context = borrowed_app.get_context_mut(uuid).unwrap();
 
-        for (_, equation) in &_context.equations {
+        /* for (_, equation) in &_context.equations {
             debug!("{:#?}", equation);
-        }
+        } */
 
         App::solve(&mut borrowed_app, uuid);
 
@@ -43,6 +42,8 @@ fn main() -> Result<()> {
 
 static EQUATIONS: Lazy<Vec<String>> = Lazy::new(|| {
     let strings = vec![
+        "x-1=0",
+        "x+1=(2/3)",
         "sin(x/2*(3+f(5)))=f(4)",
         "x+1=0",
         "x*2=1",
@@ -85,3 +86,10 @@ static EQUATIONS: Lazy<Vec<String>> = Lazy::new(|| {
         .map(|string| string.to_string())
         .collect_vec()
 });
+
+/*
+>> x+1=(2/(-3))
+DEBUG math_eval::actions::solve: x 1 + = 2 3 /
+DEBUG math_eval::actions::solve: x = 1 2 3 / -
+DEBUG math_eval::actions::solve: x = 1 2 3 / -
+ */
